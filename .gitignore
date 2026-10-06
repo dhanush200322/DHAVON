@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js Build Outputs
+.next/
+out/
+
+# NestJS / TypeScript Build Outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Test Coverage
+coverage/
+.nyc_output/
+
+# Environment and Secrets (CRITICAL: Never commit real credentials)
+.env
+.env.*
+!.env.example
+*.env
+!*.env.example
+
+# Docker Local Storage
+docker/data/
+docker/*.override.yml
+
+# IDE & Editor Specific
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Files
+logs/
+*.log
+scratch/
+tmp/
+temp/

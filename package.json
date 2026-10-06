@@ -1,0 +1,23 @@
+{
+  "name": "dhavon-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DHAVON — Personal AI Operating System",
+  "scripts": {
+    "build": "pnpm -r --filter=!dhavon-monorepo run build",
+    "lint": "pnpm -r --filter=!dhavon-monorepo run lint",
+    "type-check": "pnpm -r --filter=!dhavon-monorepo run type-check",
+    "test": "pnpm --filter @dhavon/api test",
+    "dev:web": "pnpm --filter @dhavon/web dev",
+    "dev:api": "pnpm --filter @dhavon/api dev",
+    "clean": "pnpm -r exec rm -rf node_modules dist .next"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

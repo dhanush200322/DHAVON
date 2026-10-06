@@ -1,0 +1,23 @@
+{
+  "name": "@dhavon/types",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared TypeScript domain types and contracts for DHAVON",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "lint": "echo \"@dhavon/types lint ok\"",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@dhavon/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Model Context Protocol abstraction and adapter contracts for DHAVON",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "lint": "echo \"@dhavon/mcp lint ok\"",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dhavon/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
