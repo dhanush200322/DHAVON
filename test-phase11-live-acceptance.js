@@ -6,7 +6,7 @@ const LIVE_WEB_BASE = 'https://dhavon-web.onrender.com';
 const LIVE_WSS_BASE = 'wss://dhavon-api.onrender.com';
 
 const USER_A_ID = '00000000-0000-0000-0000-000000000001';
-const USER_B_ID = '00000000-0000-0000-0000-000000000002';
+const USER_B_ID = 'a0000000-0000-4000-8000-000000000002';
 
 function generateJwt(userId, role = 'authenticated', expiresInSeconds = 3600) {
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64');
@@ -422,6 +422,21 @@ async function runAcceptanceSuite() {
     } catch (err) {
       recordTest('Task Engine Inspection', false, err.message);
     }
+
+    // Goal Tenant Isolation: User B cannot access User A's goal
+    try {
+      const crossGoalRes = await makeRequest(`${LIVE_API_BASE}/goals/${testGoalId}`, {
+        headers: { Authorization: `Bearer ${JWT_USER_B}` },
+      });
+      const isIsolated = crossGoalRes.status === 404 || crossGoalRes.status === 403;
+      recordTest(
+        'Goal Tenant Isolation: User B cannot access User A goal (returns 404/403)',
+        isIsolated,
+        `Status: ${crossGoalRes.status}, Body: ${JSON.stringify(crossGoalRes.body)}`
+      );
+    } catch (err) {
+      recordTest('Goal Tenant Isolation', false, err.message);
+    }
   }
 
   // ----------------------------------------------------------------
@@ -447,6 +462,21 @@ async function runAcceptanceSuite() {
     recordTest('MCP Server Discovery', false, err.message);
   }
 
+  // MCP Tools Discovery
+  try {
+    const toolsRes = await makeRequest(`${LIVE_API_BASE}/mcp/tools`, {
+      headers: { Authorization: `Bearer ${JWT_USER_A}` },
+    });
+    const tools = Array.isArray(toolsRes.body) ? toolsRes.body : [];
+    recordTest(
+      'MCP Tool Discovery: Discovered catalog of registered MCP tools',
+      toolsRes.status === 200 && tools.length > 0,
+      `Discovered ${tools.length} active MCP tools across servers`
+    );
+  } catch (err) {
+    recordTest('MCP Tool Discovery', false, err.message);
+  }
+
   // Safe tool execution vs. Mutation rejection without approval
   try {
     // Attempt mutating action without approval token -> Must be rejected (REJECTED status)
@@ -456,7 +486,7 @@ async function runAcceptanceSuite() {
       body: {
         serverId: 'github',
         toolName: 'create_issue',
-        arguments: { title: 'Unauthorized Test Issue', repo: 'test' },
+        arguments: { owner: 'dhanush200322', repo: 'DHAVON', title: 'Unauthorized Test Issue' },
       },
     });
 
