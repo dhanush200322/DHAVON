@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param, Query, NotFoundException } from '@nestjs/common';
 import { GoalsService, CreateGoalDto } from './goals.service';
 import { TasksService, CreateTaskDto } from '../tasks/tasks.service';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { SYSTEM_USER_UUID } from '../../common/guards/auth.guard';
 
 @Controller('goals')
 export class GoalsController {
@@ -10,21 +12,34 @@ export class GoalsController {
   ) {}
 
   @Get()
-  async getGoals(@Query('userId') userId?: string) {
-    return this.goalsService.getGoals(userId);
+  async getGoals(
+    @CurrentUser() authUserId: string,
+    @Query('userId') userId?: string,
+  ) {
+    const effectiveUserId = userId || authUserId;
+    return this.goalsService.getGoals(effectiveUserId);
   }
 
   @Get(':id')
-  async getGoalById(@Param('id') id: string) {
+  async getGoalById(
+    @CurrentUser() authUserId: string,
+    @Param('id') id: string,
+  ) {
     const goal = await this.goalsService.getGoalById(id);
-    if (!goal) {
+    if (!goal || (goal.userId && goal.userId !== authUserId && authUserId !== SYSTEM_USER_UUID)) {
       throw new NotFoundException(`Goal ${id} not found`);
     }
     return goal;
   }
 
   @Post()
-  async createGoal(@Body() body: CreateGoalDto) {
+  async createGoal(
+    @CurrentUser() authUserId: string,
+    @Body() body: CreateGoalDto,
+  ) {
+    if (!body.userId) {
+      body.userId = authUserId;
+    }
     return this.goalsService.createGoal(body);
   }
 

@@ -1,0 +1,1 @@
+{"name":"list_workspaces","description":"List the workspaces that you have access to","parameters":{"properties":{},"required":[],"type":"object"}}

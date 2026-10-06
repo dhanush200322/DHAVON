@@ -1,0 +1,1 @@
+{"name":"get_selected_workspace","description":"Get the workspace stored in the session compatibility fallback. Request-scoped workspaces supplied with an explicit workspaceId are not reflected by this tool.","parameters":{"properties":{},"required":[],"type":"object"}}

@@ -1,0 +1,1 @@
+Before answering any API-related questions, fetch the MCP resource at URI `postman://instructions` using FetchMcpResource from this MCP server, and follow the usage instructions contained within.

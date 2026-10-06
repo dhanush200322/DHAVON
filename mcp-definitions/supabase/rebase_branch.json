@@ -1,0 +1,1 @@
+{"name":"rebase_branch","description":"Rebases a development branch on production. This will effectively run any newer migrations from production onto this branch to help handle migration drift.","parameters":{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"properties":{"branch_id":{"type":"string"}},"required":["branch_id"],"type":"object"}}

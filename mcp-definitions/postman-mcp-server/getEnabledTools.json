@@ -1,0 +1,1 @@
+{"name":"getEnabledTools","description":"IMPORTANT: Run this tool first when a requested tool is unavailable. Returns information about which tools are enabled in the full and minimal tool sets, helping you identify available alternatives.","parameters":{"$schema":"http://json-schema.org/draft-07/schema#","properties":{},"type":"object"}}

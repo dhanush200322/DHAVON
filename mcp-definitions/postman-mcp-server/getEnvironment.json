@@ -1,0 +1,1 @@
+{"name":"getEnvironment","description":"Gets information about an environment.","parameters":{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"properties":{"environmentId":{"description":"The environment's ID.","type":"string"}},"required":["environmentId"],"type":"object"}}

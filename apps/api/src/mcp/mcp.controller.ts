@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { McpGatewayService } from './mcp-gateway.service';
 import { McpExecutionService } from './mcp-execution.service';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 import { IsString, IsNotEmpty, IsOptional, IsObject, MaxLength } from 'class-validator';
 
@@ -98,20 +99,24 @@ export class McpController {
   }
 
   @Post('executions')
-  async executeTool(@Body() body: ExecuteToolDto) {
+  async executeTool(
+    @CurrentUser() authUserId: string,
+    @Body() body: ExecuteToolDto,
+  ) {
     return this.gateway.executeTool({
       serverId: body.serverId,
       toolName: body.toolName,
       arguments: body.arguments || {},
-      userId: body.userId,
+      userId: body.userId || authUserId,
     });
   }
 
   @Post('executions/:id/confirm')
   async confirmExecution(
+    @CurrentUser() authUserId: string,
     @Param('id') id: string,
     @Body() body: ConfirmExecutionDto,
   ) {
-    return this.gateway.approveExecution(id, body.userId);
+    return this.gateway.approveExecution(id, body.userId || authUserId);
   }
 }

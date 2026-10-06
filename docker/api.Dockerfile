@@ -16,6 +16,7 @@ WORKDIR /app
 COPY pnpm-lock.yaml* pnpm-workspace.yaml package.json tsconfig.base.json ./
 COPY packages/ ./packages/
 COPY apps/ ./apps/
+COPY mcp-definitions/ ./mcp-definitions/
 
 # Install dependencies deterministically
 RUN pnpm install --frozen-lockfile
@@ -40,8 +41,9 @@ ENV API_PORT=4000
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nestjs
 
-# Copy self-contained deployed API package
+# Copy self-contained deployed API package and bundled MCP definitions
 COPY --from=builder --chown=nestjs:nodejs /prod/api ./
+COPY --from=builder --chown=nestjs:nodejs /app/mcp-definitions ./mcp-definitions
 
 USER nestjs
 

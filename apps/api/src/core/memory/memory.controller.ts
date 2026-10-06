@@ -12,6 +12,7 @@ import {
 import { MemoryService, CreateMemoryDto } from './memory.service';
 import { PreferenceService, SetPreferenceDto } from './preference.service';
 import { MemoryType, PreferenceCategory } from '@dhavon/types';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller()
 export class MemoryController {
@@ -22,21 +23,29 @@ export class MemoryController {
 
   @Get('memory')
   async getMemories(
+    @CurrentUser() authUserId: string,
     @Query('userId') userId?: string,
     @Query('type') type?: MemoryType,
     @Query('search') search?: string,
     @Query('limit') limit?: string,
   ) {
+    const effectiveUserId = userId || authUserId;
     const lim = limit ? parseInt(limit, 10) : 20;
     if (search) {
-      return this.memoryService.searchRelevant(userId, search, lim, type);
+      return this.memoryService.searchRelevant(effectiveUserId, search, lim, type);
     }
-    return this.memoryService.getRecentMemories(userId, type, lim);
+    return this.memoryService.getRecentMemories(effectiveUserId, type, lim);
   }
 
   @Post('memory')
   @HttpCode(HttpStatus.CREATED)
-  async createMemory(@Body() dto: CreateMemoryDto) {
+  async createMemory(
+    @CurrentUser() authUserId: string,
+    @Body() dto: CreateMemoryDto,
+  ) {
+    if (!dto.userId) {
+      dto.userId = authUserId;
+    }
     return this.memoryService.storeMemory(dto);
   }
 
@@ -48,15 +57,23 @@ export class MemoryController {
 
   @Get('preferences')
   async getPreferences(
+    @CurrentUser() authUserId: string,
     @Query('userId') userId?: string,
     @Query('category') category?: PreferenceCategory,
   ) {
-    return this.preferenceService.getPreferences(userId, category);
+    const effectiveUserId = userId || authUserId;
+    return this.preferenceService.getPreferences(effectiveUserId, category);
   }
 
   @Post('preferences')
   @HttpCode(HttpStatus.OK)
-  async setPreference(@Body() dto: SetPreferenceDto) {
+  async setPreference(
+    @CurrentUser() authUserId: string,
+    @Body() dto: SetPreferenceDto,
+  ) {
+    if (!dto.userId) {
+      dto.userId = authUserId;
+    }
     return this.preferenceService.setPreference(dto);
   }
 }

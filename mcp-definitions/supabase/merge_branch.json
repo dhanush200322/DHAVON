@@ -1,0 +1,1 @@
+{"name":"merge_branch","description":"Merges migrations and edge functions from a development branch to production.","parameters":{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"properties":{"branch_id":{"type":"string"}},"required":["branch_id"],"type":"object"}}

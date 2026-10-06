@@ -10,15 +10,28 @@ import * as path from 'path';
 export class McpDiscoveryService implements OnModuleInit {
   private readonly logger = new Logger(McpDiscoveryService.name);
 
-  // Default path to Antigravity IDE MCP tool schema definitions
-  private readonly mcpBasePath =
-    process.env.MCP_DEFINITIONS_PATH ||
-    path.join(
-      process.env.USERPROFILE || 'C:\\Users\\ro224',
-      '.gemini',
-      'antigravity-ide',
-      'mcp',
-    );
+  // Path resolution supporting local development, container runtime, and bundled definitions
+  private readonly mcpBasePath = this.resolveMcpBasePath();
+
+  private resolveMcpBasePath(): string {
+    const candidates = [
+      process.env.MCP_DEFINITIONS_PATH,
+      path.resolve(process.cwd(), 'mcp-definitions'),
+      path.resolve(__dirname, '..', '..', '..', '..', 'mcp-definitions'),
+      path.resolve(__dirname, '..', '..', 'mcp-definitions'),
+      path.join(process.env.USERPROFILE || '', '.gemini', 'antigravity-ide', 'mcp'),
+      path.join(process.env.HOME || '', '.gemini', 'antigravity-ide', 'mcp'),
+      'C:\\Users\\ro224\\.gemini\\antigravity-ide\\mcp',
+    ].filter(Boolean) as string[];
+
+    for (const candidate of candidates) {
+      if (fs.existsSync(candidate)) {
+        return candidate;
+      }
+    }
+
+    return path.resolve(process.cwd(), 'mcp-definitions');
+  }
 
   constructor(
     private readonly registry: McpRegistryService,

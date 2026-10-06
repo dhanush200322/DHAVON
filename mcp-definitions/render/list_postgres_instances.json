@@ -1,0 +1,1 @@
+{"name":"list_postgres_instances","description":"List all Postgres databases in your Render account","parameters":{"properties":{"workspaceId":{"description":"The ID of the Render workspace to use. Reuse the workspaceId the user confirmed from list_workspaces.","type":"string"}},"required":[],"type":"object"}}

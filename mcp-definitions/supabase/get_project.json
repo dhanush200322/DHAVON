@@ -1,0 +1,1 @@
+{"name":"get_project","description":"Gets details for a Supabase project.","parameters":{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"properties":{"id":{"description":"The project ID","type":"string"}},"required":["id"],"type":"object"}}
