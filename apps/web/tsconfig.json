@@ -19,7 +19,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@dhavon/types": ["../../packages/types/src/index.ts"],
+      "@dhavon/types/*": ["../../packages/types/src/*"],
+      "@dhavon/ui": ["../../packages/ui/src/index.ts"],
+      "@dhavon/ui/*": ["../../packages/ui/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

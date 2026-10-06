@@ -5,7 +5,8 @@
   "description": "DHAVON AI Observatory Web Interface",
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "next build",
+    "prebuild": "pnpm --filter @dhavon/types --filter @dhavon/ui build",
+    "build": "pnpm --filter @dhavon/types --filter @dhavon/ui build && next build",
     "start": "next start -p 3000",
     "lint": "next lint",
     "type-check": "tsc --noEmit"

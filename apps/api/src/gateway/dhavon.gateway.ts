@@ -34,8 +34,17 @@ export interface ConfirmToolPayload {
 @WebSocketGateway({
   cors: {
     origin: (origin: string, callback: (err: Error | null, allow?: boolean) => void) => {
-      // Allow localhost frontend and undefined (direct socket/tool clients)
-      const allowed = !origin || origin.includes('localhost') || origin.includes('127.0.0.1');
+      // Allow localhost frontend, vercel.app, onrender.com, configured CORS_ORIGINS, and direct socket/tool clients
+      const corsEnv = process.env.CORS_ORIGINS
+        ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim())
+        : [];
+      const allowed =
+        !origin ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1') ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.onrender.com') ||
+        corsEnv.includes(origin);
       callback(null, allowed);
     },
     credentials: true,

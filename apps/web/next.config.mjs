@@ -6,6 +6,7 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['@dhavon/types', '@dhavon/ui'],
   output: 'standalone',
   outputFileTracingRoot: path.join(__dirname, '../../'),
   async headers() {
