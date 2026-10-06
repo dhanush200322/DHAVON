@@ -64,16 +64,23 @@ The DHAVON Personal AI Operating System is deployed on a hardened multi-tier con
 
 ## 3. Production Environment Variables Plan
 
+### Live Production Endpoints
+- **Observatory Web Service:** `https://dhavon-web.onrender.com` (Service ID: `srv-db2ekh6k1f9s73a678l0`)
+- **API Core Gateway:** `https://dhavon-api.onrender.com` (Service ID: `srv-db2eioui0phs73ed8jf0`)
+- **WebSocket Gateway:** `wss://dhavon-api.onrender.com`
+- **Liveness Probe:** `https://dhavon-api.onrender.com/health/live`
+- **Readiness Probe:** `https://dhavon-api.onrender.com/health/ready`
+
 ### Public Client Variables (`apps/web/.env.production` / Web Service Environment)
 > [!NOTE]
 > These variables are exposed to the browser bundle and MUST ONLY contain public-safe endpoints.
 
-| Variable | Description | Example Production Value |
+| Variable | Description | Production Value |
 |---|---|---|
-| `NEXT_PUBLIC_API_URL` | Production REST API URL | `https://api.dhavon.ai` |
-| `NEXT_PUBLIC_WS_URL` | Production WebSocket URL | `wss://api.dhavon.ai` |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Project REST URL | `https://<project-ref>.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public anonymous key for authenticated client access | `eyJhbGciOi...` |
+| `NEXT_PUBLIC_API_URL` | Production REST API URL | `https://dhavon-api.onrender.com` |
+| `NEXT_PUBLIC_WS_URL` | Production WebSocket URL | `wss://dhavon-api.onrender.com` |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Project REST URL | Configured from environment |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public anonymous key for authenticated client access | Configured from environment |
 
 ### Server-Only Secrets (`apps/api/.env` / API Secrets Manager)
 > [!CAUTION]
